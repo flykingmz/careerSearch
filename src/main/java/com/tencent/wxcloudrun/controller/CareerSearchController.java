@@ -36,12 +36,18 @@ public class CareerSearchController {
     @GetMapping(value = "/api/careersearch/hotlist/v1")
     ApiResponse getHotListV1(@RequestParam("type") Integer type) {
         logger.info("/api/careersearch/hotlist/v1 request");
-        List<HotList>  hotlist =  careerSearchService.getHotList(type);
+        List<HotList> hotlist = null;
+        try {
+            hotlist = careerSearchService.getHotList(type);
+        }catch (Exception e){
+            logger.error("hotlist exception "+e.getMessage());
+        }
         return ApiResponse.ok(hotlist);
     }
 
     @PostMapping(value = "/api/careersearch/search")
     ResponseEntity<StreamingResponseBody> search(@RequestBody SearchRequest request){
+        logger.info("/api/careersearch/search request");
         KimiParameter kimiParameter = new KimiParameter();
         kimiParameter.setModel("moonshot-v1-32k");
         List kimiMessage = new ArrayList();

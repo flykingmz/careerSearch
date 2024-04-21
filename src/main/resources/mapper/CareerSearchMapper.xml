@@ -16,7 +16,7 @@
     <select id="getHotList" resultMap="CareerSearchMapper" parameterType="java.lang.Integer">
         SELECT `id`, `title`, `brief`, `times`, `likes`, `types_id`
         FROM hot_list
-        WHERE type = #{type}
+        WHERE types_id = #{type}
     </select>
 
 </mapper>
