@@ -1,7 +1,6 @@
 package com.tencent.wxcloudrun.service.impl;
 
 import com.tencent.wxcloudrun.config.CareerSearchConstants;
-import com.tencent.wxcloudrun.controller.CareerSearchController;
 import com.tencent.wxcloudrun.dao.CareerSearchMapper;
 import com.tencent.wxcloudrun.model.HotList;
 import com.tencent.wxcloudrun.service.CareerSearchService;
@@ -61,6 +60,7 @@ public class CareerSearchServiceImpl implements CareerSearchService {
             responseBody = outputStream -> {
                 String line;
                 while ((line = reader.readLine()) != null) {
+                    logger.info(line);
                     outputStream.write(line.getBytes());
                 }
                 reader.close();
