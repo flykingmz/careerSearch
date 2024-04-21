@@ -9,7 +9,7 @@ import java.util.Map;
 public class KimiParameter {
 String model;
 List<Map> messages;
-String temperature;
+float temperature;
 boolean stream;
 
     public List<Map> getMessages() {
@@ -20,11 +20,11 @@ boolean stream;
         this.messages = messages;
     }
 
-    public String getTemperature() {
+    public float getTemperature() {
         return temperature;
     }
 
-    public void setTemperature(String temperature) {
+    public void setTemperature(float temperature) {
         this.temperature = temperature;
     }
 
