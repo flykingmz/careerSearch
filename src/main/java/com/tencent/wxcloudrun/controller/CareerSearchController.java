@@ -45,8 +45,8 @@ public class CareerSearchController {
         return ApiResponse.ok(hotlist);
     }
 
-    @PostMapping(value = "/api/careersearch/search")
-    ResponseEntity<StreamingResponseBody> search(@RequestBody SearchRequest request){
+    @GetMapping(value = "/api/careersearch/search")
+    ResponseEntity<StreamingResponseBody> search(@RequestParam("searchWords") String searchWords){
         logger.info("/api/careersearch/search request");
         KimiParameter kimiParameter = new KimiParameter();
         kimiParameter.setModel("moonshot-v1-32k");
@@ -57,7 +57,7 @@ public class CareerSearchController {
         kimiMessage.add(system);
         Map user = new HashMap();
         user.put("role","user");
-        user.put("content",request.getSearchWords());
+        user.put("content",searchWords);
         kimiMessage.add(user);
         kimiParameter.setMessages(kimiMessage);
         kimiParameter.setTemperature("0.3");

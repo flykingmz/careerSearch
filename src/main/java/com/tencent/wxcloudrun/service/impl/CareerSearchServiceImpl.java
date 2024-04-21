@@ -1,9 +1,12 @@
 package com.tencent.wxcloudrun.service.impl;
 
 import com.tencent.wxcloudrun.config.CareerSearchConstants;
+import com.tencent.wxcloudrun.controller.CareerSearchController;
 import com.tencent.wxcloudrun.dao.CareerSearchMapper;
 import com.tencent.wxcloudrun.model.HotList;
 import com.tencent.wxcloudrun.service.CareerSearchService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
@@ -22,8 +25,11 @@ public class CareerSearchServiceImpl implements CareerSearchService {
     @Autowired
     final CareerSearchMapper careerSearchMapper;
 
+    final Logger logger;
+
     public CareerSearchServiceImpl(CareerSearchMapper careerSearchMapper) {
         this.careerSearchMapper = careerSearchMapper;
+        this.logger = LoggerFactory.getLogger(CareerSearchServiceImpl.class);
     }
 
 
@@ -41,6 +47,7 @@ public class CareerSearchServiceImpl implements CareerSearchService {
         conn.setRequestMethod("POST");
         conn.setDoInput(true);
         conn.setDoOutput(true);
+        logger.info("search into 3rd llm " + llmParameter);
         // 获取输出流并写入数据
         OutputStream os = conn.getOutputStream();
         byte[] input = llmParameter.getBytes("UTF-8");
