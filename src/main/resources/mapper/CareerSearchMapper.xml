@@ -8,13 +8,13 @@
         <result property="brief" column="brief"/>
         <result property="times" column="times"/>
         <result property="likes" column="likes"/>
-        <result property="type" column="type"/>
+        <result property="typesId" column="types_id"/>
         <result property="createdAt" column="createdAt" javaType="java.time.LocalDateTime" />
         <result property="updatedAt" column="updatedAt" javaType="java.time.LocalDateTime"  />
     </resultMap>
 
     <select id="getHotList" resultMap="CareerSearchMapper" parameterType="java.lang.Integer">
-        SELECT `id`, `title`, `brief`, `times`, `likes`, `type`
+        SELECT `id`, `title`, `brief`, `times`, `likes`, `types_id`
         FROM hot_list
         WHERE type = #{type}
     </select>

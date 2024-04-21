@@ -10,5 +10,5 @@ public class HotList implements Serializable {
     private String brief;
     private Integer times;
     private Integer likes;
-    private String type;
+    private String typesId;
 }
