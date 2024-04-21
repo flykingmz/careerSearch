@@ -61,7 +61,7 @@ public class CareerSearchController {
         kimiMessage.add(user);
         kimiParameter.setMessages(kimiMessage);
         kimiParameter.setTemperature("0.3");
-        kimiParameter.setStream(false);
+        kimiParameter.setStream(true);
         StreamingResponseBody responseBody = null;
         JSONObject jsonObject = (JSONObject)JSON.toJSON(kimiParameter);
         String llmParameter = jsonObject.toJSONString();
