@@ -47,12 +47,15 @@ public class CareerSearchServiceImpl implements CareerSearchService {
         conn.setDoInput(true);
         conn.setDoOutput(true);
         logger.info("search into 3rd llm " + llmParameter);
+        logger.info("search into 3rd llm url " + CareerSearchConstants.KIMICHARTURL);
+        logger.info("search into 3rd llm key " + CareerSearchConstants.KIMIKEY);
         // 获取输出流并写入数据
         OutputStream os = conn.getOutputStream();
         byte[] input = llmParameter.getBytes("UTF-8");
         os.write(input, 0, input.length);
         // 获取响应码和响应内容
         StreamingResponseBody responseBody = null;
+        logger.info("url return code:"+conn.getResponseCode());
         if (conn.getResponseCode() == HttpURLConnection.HTTP_OK) {
             InputStream inputStream = conn.getInputStream();
             BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
