@@ -8,6 +8,7 @@ import com.tencent.wxcloudrun.model.KimiParameter;
 import com.tencent.wxcloudrun.service.CareerSearchService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,10 +23,12 @@ import java.util.Map;
 
 @RestController
 public class CareerSearchController {
+
+    @Autowired
     final CareerSearchService careerSearchService;
     final Logger logger;
 
-    public CareerSearchController(CareerSearchService careerSearchService, Logger logger) {
+    public CareerSearchController(CareerSearchService careerSearchService) {
         this.careerSearchService = careerSearchService;
         this.logger = LoggerFactory.getLogger(CareerSearchController.class);
     }

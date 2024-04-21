@@ -1,8 +1,11 @@
 package com.tencent.wxcloudrun.service.impl;
 
 import com.tencent.wxcloudrun.config.CareerSearchConstants;
+import com.tencent.wxcloudrun.dao.CareerSearchMapper;
 import com.tencent.wxcloudrun.model.HotList;
 import com.tencent.wxcloudrun.service.CareerSearchService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
 import java.io.BufferedReader;
@@ -13,10 +16,20 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.List;
 
+@Service
 public class CareerSearchServiceImpl implements CareerSearchService {
+
+    @Autowired
+    final CareerSearchMapper careerSearchMapper;
+
+    public CareerSearchServiceImpl(CareerSearchMapper careerSearchMapper) {
+        this.careerSearchMapper = careerSearchMapper;
+    }
+
+
     @Override
     public List<HotList> getHotList(Integer type) {
-        return null;
+        return careerSearchMapper.getHotList(type);
     }
 
     @Override

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tencent.wxcloudrun.dao.CountersMapper">
+
+    <resultMap id="CareerSearchMapper" type="com.tencent.wxcloudrun.model.HotList">
+        <id property="id" column="id"/>
+        <result property="title" column="title"/>
+        <result property="brief" column="brief"/>
+        <result property="times" column="times"/>
+        <result property="likes" column="likes"/>
+        <result property="type" column="type"/>
+        <result property="createdAt" column="createdAt" javaType="java.time.LocalDateTime" />
+        <result property="updatedAt" column="updatedAt" javaType="java.time.LocalDateTime"  />
+    </resultMap>
+
+    <select id="getHotList" resultMap="CareerSearchMapper" parameterType="java.lang.Integer">
+        SELECT `id`, `title`, `brief`, `times`, `likes`, `type`
+        FROM hot_list
+        WHERE type = #{type}
+    </select>
+
+</mapper>
