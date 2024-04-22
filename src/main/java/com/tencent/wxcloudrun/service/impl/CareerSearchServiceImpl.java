@@ -15,6 +15,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
 
@@ -39,23 +40,15 @@ public class CareerSearchServiceImpl implements CareerSearchService {
 
     @Override
     public StreamingResponseBody search(String llmParameter) throws Exception {
-        URL url = new URL(CareerSearchConstants.KIMICHARTURL);
-        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-        conn.setRequestProperty("Authorization", "Bearer " + CareerSearchConstants.KIMIKEY);
-        conn.setRequestProperty("Content-Type", "application/json");
-        conn.setRequestMethod("POST");
-        conn.setDoInput(true);
-        conn.setDoOutput(true);
         logger.info("search into 3rd llm " + llmParameter);
-        logger.info("search into 3rd llm url " + CareerSearchConstants.KIMICHARTURL);
-        logger.info("search into 3rd llm key " + CareerSearchConstants.KIMIKEY);
         // 获取输出流并写入数据
+        HttpURLConnection conn = getConect();
         OutputStream os = conn.getOutputStream();
         byte[] input = llmParameter.getBytes("UTF-8");
         os.write(input, 0, input.length);
         // 获取响应码和响应内容
         StreamingResponseBody responseBody = null;
-        logger.info("url return code:"+conn.getResponseCode());
+        logger.info("url return code:" + conn.getResponseCode());
         if (conn.getResponseCode() == HttpURLConnection.HTTP_OK) {
             InputStream inputStream = conn.getInputStream();
             BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
@@ -71,5 +64,42 @@ public class CareerSearchServiceImpl implements CareerSearchService {
             };
         }
         return responseBody;
+    }
+
+    private HttpURLConnection getConect() throws Exception {
+        URL url = new URL(CareerSearchConstants.KIMICHARTURL);
+        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+        conn.setRequestProperty("Authorization", "Bearer " + CareerSearchConstants.KIMIKEY);
+        conn.setRequestProperty("Content-Type", "application/json");
+        conn.setRequestMethod("POST");
+        conn.setDoInput(true);
+        conn.setDoOutput(true);
+
+        logger.info("search into 3rd llm url " + CareerSearchConstants.KIMICHARTURL);
+        logger.info("search into 3rd llm key " + CareerSearchConstants.KIMIKEY);
+        return conn;
+    }
+
+    @Override
+    public String recommend(String llmParameter) throws Exception {
+        logger.info("recommend into 3rd llm " + llmParameter);
+        // 获取输出流并写入数据
+        HttpURLConnection conn = getConect();
+        // 获取输出流并写入数据
+        OutputStream os = conn.getOutputStream();
+        byte[] input = llmParameter.getBytes("UTF-8");
+        os.write(input, 0, input.length);
+        // 获取响应码和响应内容
+        StringBuilder response = new StringBuilder();
+        if (conn.getResponseCode() == HttpURLConnection.HTTP_OK) {
+            InputStream inputStream = conn.getInputStream();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+            String line;
+
+            while ((line = reader.readLine()) != null) {
+                response.append(line);
+            }
+        }
+        return response.toString();
     }
 }
