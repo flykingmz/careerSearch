@@ -35,6 +35,11 @@ public class CareerSearchController {
         this.logger = LoggerFactory.getLogger(CareerSearchController.class);
     }
 
+    /**
+     * 热点话题推荐，依据不同类型推荐，从数据库获取相关话题
+     * @param type
+     * @return
+     */
     @GetMapping(value = "/api/careersearch/hotlist/v1")
     ApiResponse getHotListV1(@RequestParam("type") Integer type) {
         logger.info("/api/careersearch/hotlist/v1 request");
@@ -47,6 +52,11 @@ public class CareerSearchController {
         return ApiResponse.ok(hotlist);
     }
 
+    /**
+     * 大模型类似问题推荐列表
+     * @param recommendationsRequest
+     * @return
+     */
     @PostMapping(value = "/api/careersearch/recommend")
     ApiResponse getRecommendations(@RequestBody RecommendationsRequest recommendationsRequest){
         logger.info("/api/careersearch/search request "+recommendationsRequest.getSearchWords());
@@ -70,6 +80,31 @@ public class CareerSearchController {
         return null;
     }
 
+    /**
+     * 统计点赞次数
+     * @param docId
+     * @return
+     */
+    @GetMapping(value = "/api/careersearch/statistics/like")
+    ApiResponse likeStatistics(@RequestParam("docId") String docId){
+        return null;
+    }
+
+    /**
+     * 统计阅读次数
+     * @param docId
+     * @return
+     */
+    @GetMapping(value = "/api/careersearch/statistics/read")
+    ApiResponse readStatistics(@RequestParam("docId") String docId){
+        return null;
+    }
+
+    /**
+     * 大模型搜索主入口
+     * @param searchRequest
+     * @return
+     */
     @PostMapping(value = "/api/careersearch/search")
     ResponseEntity<StreamingResponseBody> search(@RequestBody SearchRequest searchRequest){
         logger.info("/api/careersearch/search request "+searchRequest.getSearchWords() +"|"+searchRequest.getCareerType());
@@ -90,7 +125,7 @@ public class CareerSearchController {
         List kimiMessage = new ArrayList();
         Map system = new HashMap();
         system.put("role","system");
-        system.put("content", "你是职场智搜，你是一名具有丰富经验的职场咨询导师，擅长于职场中的各种问题咨询和问题解答，你只回答职场相关问题，如果出现非职场相关问题，请回答：抱歉我不擅长这个问题喔，您可以咨询职场相关问题。如果是职场问题请给出回答，并给出一个示例和3个相关问题推荐。");
+        system.put("content", "你是职场智搜，你是一名具有丰富经验的职场咨询导师，擅长于职场中的各种问题咨询和问题解答，你只回答职场相关问题，如果出现非职场相关问题，请回答：抱歉我不擅长这个问题喔，您可以咨询职场相关问题。如果是职场问题请给出回答。");
 
         kimiMessage.add(system);
         Map user = new HashMap();
