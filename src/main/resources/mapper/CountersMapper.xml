@@ -22,10 +22,6 @@
         limit 1
     </delete>
 
-    <update id="upsertCount" parameterType="com.tencent.wxcloudrun.model.Counter">
-        INSERT INTO `Counters`(`id`, `count`)
-        VALUE(#{id}, #{count}) 
-        ON DUPLICATE KEY UPDATE count=#{count}
-    </update>
+
 
 </mapper>

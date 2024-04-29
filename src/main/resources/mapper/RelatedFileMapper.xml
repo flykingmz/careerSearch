@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tencent.wxcloudrun.dao.HotListMapper">
+
+    <resultMap id="RelatedFileMapper" type="com.tencent.wxcloudrun.model.RelatedFile">
+        <id property="id" column="id"/>
+        <result property="title" column="title"/>
+        <result property="url" column="url"/>
+        <result property="downloads" column="downloads"/>
+        <result property="createdAt" column="createdAt" javaType="java.time.LocalDateTime" />
+        <result property="updatedAt" column="updatedAt" javaType="java.time.LocalDateTime"  />
+    </resultMap>
+
+    <select id="getRelatedFile" resultMap="RelatedFileMapper" parameterType="boolean">
+        SELECT `id`, `title`, `url`, `downloads`
+        FROM related_file
+        <if test="hot">
+            ORDER BY downloads DESC
+        </if>
+           LIMIT 3;
+    </select>
+
+    <update id="updateDownloads" parameterType="java.lang.Integer">
+        UPDATE related_file SET downloads = downloads+1
+        <where>
+            id = #{docId}
+        </where>
+    </update>
+
+
+</mapper>

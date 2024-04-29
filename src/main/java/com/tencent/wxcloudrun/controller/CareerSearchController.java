@@ -2,11 +2,13 @@ package com.tencent.wxcloudrun.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.tencent.wxcloudrun.config.ApiResponse;
+import com.tencent.wxcloudrun.config.CareerSearchConstants;
 import com.tencent.wxcloudrun.config.SearchType;
 import com.tencent.wxcloudrun.dto.RecommendationsRequest;
 import com.tencent.wxcloudrun.dto.SearchRequest;
 import com.tencent.wxcloudrun.model.HotList;
 import com.tencent.wxcloudrun.model.KimiParameter;
+import com.tencent.wxcloudrun.model.RelatedFile;
 import com.tencent.wxcloudrun.service.CareerSearchService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -77,7 +79,15 @@ public class CareerSearchController {
      */
     @PostMapping(value = "/api/careersearch/getRelatedFile")
     ApiResponse getRelatedFile(@RequestBody SearchRequest searchRequest){
-        return null;
+        //TODO 后续可以基于搜索的关键词解析后做最匹配的相关文件推荐。
+
+        List<RelatedFile> relatedFileList = careerSearchService.getRelatedFile();
+        return ApiResponse.ok(relatedFileList);
+    }
+    @GetMapping(value = "/api/careersearch/updateRelatedFileDownloads")
+    ApiResponse updateRelatedFileDownloads(@RequestParam("docId") Integer docId) {
+        careerSearchService.updateRelatedFileDownloads(docId);
+        return ApiResponse.ok();
     }
 
     /**
@@ -86,8 +96,9 @@ public class CareerSearchController {
      * @return
      */
     @GetMapping(value = "/api/careersearch/statistics/like")
-    ApiResponse likeStatistics(@RequestParam("docId") String docId){
-        return null;
+    ApiResponse like(@RequestParam("docId") int docId){
+         careerSearchService.like(docId);
+         return ApiResponse.ok();
     }
 
     /**
@@ -95,10 +106,10 @@ public class CareerSearchController {
      * @param docId
      * @return
      */
-    @GetMapping(value = "/api/careersearch/statistics/read")
-    ApiResponse readStatistics(@RequestParam("docId") String docId){
-        return null;
-    }
+//    @GetMapping(value = "/api/careersearch/statistics/read")
+//    ApiResponse readStatistics(@RequestParam("docId") String docId){
+//        return null;
+//    }
 
     /**
      * 大模型搜索主入口
@@ -108,6 +119,9 @@ public class CareerSearchController {
     @PostMapping(value = "/api/careersearch/search")
     ResponseEntity<StreamingResponseBody> search(@RequestBody SearchRequest searchRequest){
         logger.info("/api/careersearch/search request "+searchRequest.getSearchWords() +"|"+searchRequest.getCareerType());
+        //调用搜索列表流水记录,可以修改为异步实现
+        careerSearchService.searchRecord(searchRequest,true);
+
         StreamingResponseBody responseBody = null;
         String llmParameter = getKimiparameter(searchRequest.getSearchWords(),searchRequest.getCareerType(),SearchType.SEARCH);
         try {
@@ -119,13 +133,13 @@ public class CareerSearchController {
                 .contentType(MediaType.TEXT_PLAIN)
                 .body(responseBody);
     }
-    private String getKimiparameter(String searchWords, String careerType, SearchType searchType){
+    private String getKimiparameter(String searchWords, Integer careerType, SearchType searchType){
         KimiParameter kimiParameter = new KimiParameter();
         kimiParameter.setModel("moonshot-v1-32k");
         List kimiMessage = new ArrayList();
         Map system = new HashMap();
         system.put("role","system");
-        system.put("content", "你是职场智搜，你是一名具有丰富经验的职场咨询导师，擅长于职场中的各种问题咨询和问题解答，你只回答职场相关问题，如果出现非职场相关问题，请回答：抱歉我不擅长这个问题喔，您可以咨询职场相关问题。如果是职场问题请给出回答。");
+        system.put("content", CareerSearchConstants.ADMINPROMT);
 
         kimiMessage.add(system);
         Map user = new HashMap();

@@ -5,5 +5,6 @@ import lombok.Data;
 @Data
 public class SearchRequest {
     String searchWords;
-    String careerType;
+    Integer careerType;
+    Integer docId;
 }
