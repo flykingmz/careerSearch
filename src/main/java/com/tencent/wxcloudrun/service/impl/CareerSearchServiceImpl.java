@@ -125,7 +125,7 @@ public class CareerSearchServiceImpl implements CareerSearchService {
                 public void run() {
                     String searchWords = searchRequest.getSearchWords();
                     Integer careerType = searchRequest.getCareerType();
-                    int docId = searchRequest.getDocId();
+                    Long docId = searchRequest.getDocId();
                     SearchList searchList = new SearchList();
                     searchList.setTitle(searchWords);
                     searchList.setTypesId(careerType);
@@ -138,7 +138,7 @@ public class CareerSearchServiceImpl implements CareerSearchService {
         }else {
             String searchWords = searchRequest.getSearchWords();
             Integer careerType = searchRequest.getCareerType();
-            int docId = searchRequest.getDocId();
+            Long docId = searchRequest.getDocId();
             SearchList searchList = new SearchList();
             searchList.setTitle(searchWords);
             searchList.setTypesId(careerType);
@@ -150,7 +150,7 @@ public class CareerSearchServiceImpl implements CareerSearchService {
     }
 
     @Override
-    public void like(Integer docId) {
+    public void like(Long docId) {
         /*docId大于0代表的是热点搜索数据，其它普通搜索不具备docId
        只有离线通过搜索流水分析后存在热点的话题，才会进入到hotlist，这时才会出现docId
          */
@@ -166,7 +166,12 @@ public class CareerSearchServiceImpl implements CareerSearchService {
     }
 
     @Override
-    public void updateRelatedFileDownloads(Integer docId) {
+    public void updateRelatedFileDownloads(Long docId) {
         relatedFileMapper.updateDownloads(docId);
+    }
+
+    @Override
+    public String downloads(Long docId) {
+        return relatedFileMapper.getDownloadsUrl(docId);
     }
 }

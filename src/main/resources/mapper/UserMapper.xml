@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tencent.wxcloudrun.dao.HotListMapper">
+
+    <resultMap id="UserMapper" type="com.tencent.wxcloudrun.model.User">
+        <id property="id" column="id"/>
+        <result property="openId" column="openId"/>
+        <result property="name" column="name"/>
+        <result property="phone" column="phone"/>
+        <result property="sex" column="sex"/>
+        <result property="balance" column="balance"/>
+        <result property="vipType" column="vipType"/>
+        <result property="vipDeadline" column="vipDeadline" javaType="java.time.LocalDateTime" />
+        <result property="createdAt" column="createdAt" javaType="java.time.LocalDateTime" />
+        <result property="updatedAt" column="updatedAt" javaType="java.time.LocalDateTime"  />
+    </resultMap>
+    <insert id="insert" parameterType="User">
+        INSERT INTO user_info (openId, name, phone, sex, balance, vipType,vipDeadline)
+        values (#{openId},#{name},#{phone},#{sex},#{balance},#{vipType},#{vipDeadline})
+    </insert>
+
+    <select id="selectByOpenId" parameterType="String">
+        SELECT openId, name, phone, sex, balance, vipType,vipDeadline
+        FROM user_info
+        <where>
+            openId = #{openId}
+        </where>
+    </select>
+
+</mapper>

@@ -81,6 +81,8 @@ public class CareerSearchController {
     ApiResponse getRelatedFile(@RequestBody SearchRequest searchRequest){
         //TODO 后续可以基于搜索的关键词解析后做最匹配的相关文件推荐。
 
+        //TODO 这里还要获取用户登录态以及费用情况，如果没有充值，没有登录都不能把下载链接响应出去
+
         List<RelatedFile> relatedFileList = careerSearchService.getRelatedFile();
         return ApiResponse.ok(relatedFileList);
     }
@@ -96,7 +98,7 @@ public class CareerSearchController {
      * @return
      */
     @GetMapping(value = "/api/careersearch/statistics/like")
-    ApiResponse like(@RequestParam("docId") int docId){
+    ApiResponse like(@RequestParam("docId") Long docId){
          careerSearchService.like(docId);
          return ApiResponse.ok();
     }
@@ -160,4 +162,6 @@ public class CareerSearchController {
         JSONObject jsonObject = (JSONObject)JSON.toJSON(kimiParameter);
         return jsonObject.toJSONString();
     }
+
+
 }

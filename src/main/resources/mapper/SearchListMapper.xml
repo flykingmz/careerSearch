@@ -11,8 +11,7 @@
     </resultMap>
 
     <insert id="insertSearchRecord" parameterType="com.tencent.wxcloudrun.model.SearchList">
-        INSERT INTO search_list(title,typesId) VALUES(#{title},#{typeId});
+        INSERT INTO search_list(title,typesId) VALUES(#{title},#{typesId});
     </insert>
-
 
 </mapper>

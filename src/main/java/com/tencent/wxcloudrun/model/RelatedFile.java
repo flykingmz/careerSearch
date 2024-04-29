@@ -7,6 +7,6 @@ import lombok.Data;
 public class RelatedFile implements Serializable{
     private Integer id;
     private String title;
-    private String url;
+//    private String url;
     private Integer downloads;
 }

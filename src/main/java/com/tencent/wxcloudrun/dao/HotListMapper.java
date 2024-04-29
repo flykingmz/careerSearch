@@ -9,9 +9,9 @@ import java.util.List;
 
 @Mapper
 public interface HotListMapper {
-    List<HotList> getHotList(Integer typeId);
-    void updateHotListTimes(Integer docId);
-    void updateHotListLikes(Integer docId);
+    List<HotList> getHotList(Integer typesId);
+    void updateHotListTimes(Long docId);
+    void updateHotListLikes(Long docId);
 
 
 }

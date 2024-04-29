@@ -9,5 +9,6 @@ import java.util.List;
 @Mapper
 public interface RelatedFileMapper {
     List<RelatedFile> getRelatedFile(boolean hot);
-    void updateDownloads(Integer docId);
+    void updateDownloads(Long docId);
+    String getDownloadsUrl(Long docId);
 }

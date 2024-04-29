@@ -37,3 +37,17 @@ CREATE TABLE `related_file` (
   `updatedAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8
+
+CREATE TABLE `user_info` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `openId` VARCHAR(255) NOT NULL,
+  `name` VARCHAR(128) ,
+  `phone` VARCHAR(128),
+  `sex` VARCHAR(64),
+  `balance` int(11),
+  `vipType` TINYINT(1),
+  `vipDeadline` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `createdAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updatedAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8

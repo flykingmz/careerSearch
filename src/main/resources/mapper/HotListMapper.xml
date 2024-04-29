@@ -13,31 +13,22 @@
         <result property="updatedAt" column="updatedAt" javaType="java.time.LocalDateTime"  />
     </resultMap>
 
-    <select id="getHotList" resultMap="CareerSearchMapper" parameterType="java.lang.Integer">
+    <select id="getHotList" resultMap="HotListMapper" parameterType="java.lang.Integer">
         SELECT `id`, `title`, `brief`, `times`, `likes`, `typesId`
         FROM hot_list
-        WHERE typesId = #{typeId}
+        WHERE typesId = #{typesId}
     </select>
 
-    <insert id="insertSearchRecord" parameterType="com.tencent.wxcloudrun.model.SearchList">
-        INSERT INTO search_list(title,typesId) VALUES(#{title},#{typeId});
-    </insert>
-
-    <update id="updateHotListTimes" parameterType="java.lang.Integer">
+    <update id="updateHotListTimes" parameterType="java.lang.Long">
         UPDATE hot_list
         SET times = times + 1
         WHERE id = #{docId}
     </update>
 
-    <update id="updateHotListLikes" parameterType="java.lang.Integer">
+    <update id="updateHotListLikes" parameterType="java.lang.Long">
         UPDATE hot_list
         SET likes = likes + 1
         WHERE id = #{docId}
     </update>
 
-    <select id="getHotList" resultMap="CareerSearchMapper" parameterType="java.lang.Integer">
-        SELECT `id`, `title`, `brief`, `times`, `likes`, `typesId`
-        FROM hot_list
-        WHERE typesId = #{typeId}
-    </select>
 </mapper>

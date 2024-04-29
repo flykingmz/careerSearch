@@ -12,8 +12,10 @@ public interface CareerSearchService {
     StreamingResponseBody search(String llmParameter) throws Exception ;
     String recommend(String llmParameter) throws Exception ;
     void searchRecord(SearchRequest searchRequest,boolean async);
-    void like(Integer docId);
+    void like(Long docId);
 
     List<RelatedFile> getRelatedFile();
-    void updateRelatedFileDownloads(Integer docId);
+    void updateRelatedFileDownloads(Long docId);
+
+    String downloads(Long docId);
 }

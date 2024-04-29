@@ -12,7 +12,7 @@
     </resultMap>
 
     <select id="getRelatedFile" resultMap="RelatedFileMapper" parameterType="boolean">
-        SELECT `id`, `title`, `url`, `downloads`
+        SELECT `id`, `title`, `downloads`
         FROM related_file
         <if test="hot">
             ORDER BY downloads DESC
@@ -20,12 +20,15 @@
            LIMIT 3;
     </select>
 
-    <update id="updateDownloads" parameterType="java.lang.Integer">
+    <update id="updateDownloads" parameterType="java.lang.Long">
         UPDATE related_file SET downloads = downloads+1
         <where>
             id = #{docId}
         </where>
     </update>
+    <select id="getDownloadsUrl" parameterType="java.lang.Long">
+        select url from related_file where id=#{docId}
+    </select>
 
 
 </mapper>
