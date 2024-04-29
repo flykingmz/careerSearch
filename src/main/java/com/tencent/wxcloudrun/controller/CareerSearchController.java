@@ -42,9 +42,9 @@ public class CareerSearchController {
      * @param type
      * @return
      */
-    @GetMapping(value = "/api/careersearch/hotlist/v1")
+    @GetMapping(value = "/careersearch/hotlist/v1")
     ApiResponse getHotListV1(@RequestParam("type") Integer type) {
-        logger.info("/api/careersearch/hotlist/v1 request");
+        logger.info("/careersearch/hotlist/v1 request");
         List<HotList> hotlist = null;
         try {
             hotlist = careerSearchService.getHotList(type);
@@ -59,9 +59,9 @@ public class CareerSearchController {
      * @param recommendationsRequest
      * @return
      */
-    @PostMapping(value = "/api/careersearch/recommend")
+    @PostMapping(value = "/careersearch/recommend")
     ApiResponse getRecommendations(@RequestBody RecommendationsRequest recommendationsRequest){
-        logger.info("/api/careersearch/search request "+recommendationsRequest.getSearchWords());
+        logger.info("/careersearch/search request "+recommendationsRequest.getSearchWords());
         String llmParameter = getKimiparameter(recommendationsRequest.getSearchWords(),null,SearchType.RECOMMENDATIONS);
         String recommendations = null;
         try {
@@ -77,11 +77,9 @@ public class CareerSearchController {
      * @param searchRequest
      * @return
      */
-    @PostMapping(value = "/api/careersearch/getRelatedFile")
+    @PostMapping(value = "/careersearch/getRelatedFile")
     ApiResponse getRelatedFile(@RequestBody SearchRequest searchRequest){
-        //TODO 后续可以基于搜索的关键词解析后做最匹配的相关文件推荐。
-
-        //TODO 这里还要获取用户登录态以及费用情况，如果没有充值，没有登录都不能把下载链接响应出去
+        //TODO 后续可以基于搜索的关键词解析后做最匹配的相关文件推荐，只是列表不包含下载url。
 
         List<RelatedFile> relatedFileList = careerSearchService.getRelatedFile();
         return ApiResponse.ok(relatedFileList);
@@ -92,7 +90,7 @@ public class CareerSearchController {
      * @param docId
      * @return
      */
-    @GetMapping(value = "/api/careersearch/statistics/like")
+    @GetMapping(value = "/careersearch/statistics/like")
     ApiResponse like(@RequestParam("docId") Long docId){
          careerSearchService.like(docId);
          return ApiResponse.ok();
@@ -113,9 +111,9 @@ public class CareerSearchController {
      * @param searchRequest
      * @return
      */
-    @PostMapping(value = "/api/careersearch/search")
+    @PostMapping(value = "/careersearch/search")
     ResponseEntity<StreamingResponseBody> search(@RequestBody SearchRequest searchRequest){
-        logger.info("/api/careersearch/search request "+searchRequest.getSearchWords() +"|"+searchRequest.getCareerType());
+        logger.info("/careersearch/search request "+searchRequest.getSearchWords() +"|"+searchRequest.getCareerType());
         //调用搜索列表流水记录,可以修改为异步实现
         careerSearchService.searchRecord(searchRequest,true);
 
