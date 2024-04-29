@@ -58,6 +58,8 @@ ApiResponse downloads(@RequestParam("docId") Long docId){
         if(!canDownload){
             return ApiResponse.error("您的余额不足，请充值再下载");
         }
+        //更新下载次数，再获取下载url
+        careerSearchService.updateRelatedFileDownloads(docId);
         String downloadsUrl = careerSearchService.downloads(docId);
         return ApiResponse.ok(downloadsUrl);
     }

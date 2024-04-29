@@ -86,11 +86,6 @@ public class CareerSearchController {
         List<RelatedFile> relatedFileList = careerSearchService.getRelatedFile();
         return ApiResponse.ok(relatedFileList);
     }
-    @GetMapping(value = "/api/careersearch/updateRelatedFileDownloads")
-    ApiResponse updateRelatedFileDownloads(@RequestParam("docId") Integer docId) {
-        careerSearchService.updateRelatedFileDownloads(docId);
-        return ApiResponse.ok();
-    }
 
     /**
      * 统计点赞次数
