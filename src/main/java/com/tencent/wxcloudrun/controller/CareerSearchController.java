@@ -8,7 +8,7 @@ import com.tencent.wxcloudrun.dto.RecommendationsRequest;
 import com.tencent.wxcloudrun.dto.SearchRequest;
 import com.tencent.wxcloudrun.model.HotList;
 import com.tencent.wxcloudrun.model.KimiParameter;
-import com.tencent.wxcloudrun.model.RelatedFile;
+import com.tencent.wxcloudrun.model.HotDownloadsFile;
 import com.tencent.wxcloudrun.service.CareerSearchService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -81,8 +81,14 @@ public class CareerSearchController {
     ApiResponse getRelatedFile(@RequestBody SearchRequest searchRequest){
         //TODO 后续可以基于搜索的关键词解析后做最匹配的相关文件推荐，只是列表不包含下载url。
 
-        List<RelatedFile> relatedFileList = careerSearchService.getRelatedFile();
+        List<HotDownloadsFile> relatedFileList = careerSearchService.getRelatedFile();
         return ApiResponse.ok(relatedFileList);
+    }
+
+    @GetMapping(value = "/careersearch/hotDownloads")
+    ApiResponse getHotDownloads(@RequestParam("hotType") int hotType){
+        List<HotDownloadsFile> hotDownloads = careerSearchService.getHotDownloads(hotType);
+        return ApiResponse.ok(hotDownloads);
     }
 
     /**

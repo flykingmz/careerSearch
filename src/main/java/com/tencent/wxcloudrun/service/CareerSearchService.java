@@ -2,7 +2,7 @@ package com.tencent.wxcloudrun.service;
 
 import com.tencent.wxcloudrun.dto.SearchRequest;
 import com.tencent.wxcloudrun.model.HotList;
-import com.tencent.wxcloudrun.model.RelatedFile;
+import com.tencent.wxcloudrun.model.HotDownloadsFile;
 import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
 import java.util.List;
@@ -14,8 +14,10 @@ public interface CareerSearchService {
     void searchRecord(SearchRequest searchRequest,boolean async);
     void like(Long docId);
 
-    List<RelatedFile> getRelatedFile();
+    List<HotDownloadsFile> getRelatedFile();
     void updateRelatedFileDownloads(Long docId);
 
     String downloads(Long docId);
+
+    List<HotDownloadsFile> getHotDownloads(int fileType);
 }

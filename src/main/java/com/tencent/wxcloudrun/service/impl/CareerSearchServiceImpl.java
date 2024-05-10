@@ -2,11 +2,11 @@ package com.tencent.wxcloudrun.service.impl;
 
 import com.tencent.wxcloudrun.config.CareerSearchConstants;
 import com.tencent.wxcloudrun.dao.HotListMapper;
-import com.tencent.wxcloudrun.dao.RelatedFileMapper;
+import com.tencent.wxcloudrun.dao.HotDownloadsMapper;
 import com.tencent.wxcloudrun.dao.SearchListMapper;
 import com.tencent.wxcloudrun.dto.SearchRequest;
 import com.tencent.wxcloudrun.model.HotList;
-import com.tencent.wxcloudrun.model.RelatedFile;
+import com.tencent.wxcloudrun.model.HotDownloadsFile;
 import com.tencent.wxcloudrun.model.SearchList;
 import com.tencent.wxcloudrun.service.CareerSearchService;
 import org.slf4j.Logger;
@@ -31,7 +31,7 @@ public class CareerSearchServiceImpl implements CareerSearchService {
     @Autowired
     final HotListMapper hotListMapper;
     @Autowired
-    final RelatedFileMapper relatedFileMapper;
+    final HotDownloadsMapper hotDownloadsMapper;
     @Autowired
     final SearchListMapper searchListMapper;
 
@@ -39,9 +39,9 @@ public class CareerSearchServiceImpl implements CareerSearchService {
 
     final Logger logger;
 
-    public CareerSearchServiceImpl(HotListMapper hotListMapper, RelatedFileMapper relatedFileMapper, SearchListMapper searchListMapper) {
+    public CareerSearchServiceImpl(HotListMapper hotListMapper, HotDownloadsMapper hotDownloadsMapper, SearchListMapper searchListMapper) {
         this.hotListMapper = hotListMapper;
-        this.relatedFileMapper = relatedFileMapper;
+        this.hotDownloadsMapper = hotDownloadsMapper;
         this.searchListMapper = searchListMapper;
         this.logger = LoggerFactory.getLogger(CareerSearchServiceImpl.class);
     }
@@ -161,17 +161,22 @@ public class CareerSearchServiceImpl implements CareerSearchService {
     }
 
     @Override
-    public List<RelatedFile> getRelatedFile() {
-        return relatedFileMapper.getRelatedFile(true);
+    public List<HotDownloadsFile> getRelatedFile() {
+        return hotDownloadsMapper.getRelatedFile(true);
     }
 
     @Override
     public void updateRelatedFileDownloads(Long docId) {
-        relatedFileMapper.updateDownloads(docId);
+        hotDownloadsMapper.updateDownloads(docId);
     }
 
     @Override
     public String downloads(Long docId) {
-        return relatedFileMapper.getDownloadsUrl(docId);
+        return hotDownloadsMapper.getDownloadsUrl(docId);
+    }
+
+    @Override
+    public List<HotDownloadsFile> getHotDownloads(int fileType) {
+        return hotDownloadsMapper.getHotDownloads(fileType);
     }
 }

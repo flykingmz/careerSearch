@@ -1,33 +1,43 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.tencent.wxcloudrun.dao.RelatedFileMapper">
+<mapper namespace="com.tencent.wxcloudrun.dao.HotDownloadsMapper">
 
-    <resultMap id="RelatedFileMapper" type="com.tencent.wxcloudrun.model.RelatedFile">
+    <resultMap id="HotDownloadsMapper" type="com.tencent.wxcloudrun.model.HotDownloadsFile">
         <id property="id" column="id"/>
         <result property="title" column="title"/>
-        <result property="url" column="url"/>
+        <result property="brief" column="brief"/>
+        <result property="cost" column="cost"/>
         <result property="downloads" column="downloads"/>
+        <result property="imageUrl" column="imageUrl"/>
+        <result property="downloads" column="downloads"/>
+        <result property="fileType" column="fileType"/>
         <result property="createdAt" column="createdAt" javaType="java.time.LocalDateTime" />
         <result property="updatedAt" column="updatedAt" javaType="java.time.LocalDateTime"  />
     </resultMap>
 
     <select id="getRelatedFile" resultMap="RelatedFileMapper" parameterType="boolean">
-        SELECT `id`, `title`, `downloads`
-        FROM related_file
+        SELECT `id`, `title`, `downloads`, `cost`
+        FROM hot_downloads_file
         <if test="hot">
             ORDER BY downloads DESC
         </if>
-           LIMIT 3;
+           LIMIT 4;
     </select>
 
     <update id="updateDownloads" parameterType="java.lang.Long">
-        UPDATE related_file SET downloads = downloads+1
+        UPDATE hot_downloads_file SET downloads = downloads+1
         <where>
             id = #{docId}
         </where>
     </update>
     <select id="getDownloadsUrl" parameterType="java.lang.Long">
-        select url from related_file where id=#{docId}
+        select downloadUrl from hot_downloads_file where id=#{docId}
+    </select>
+
+    <select id="getHotDownloads" resultMap="HotDownloadsMapper" parameterType="int">
+        SELECT `id`, `title`, `downloads`, `cost`, `brief`, `imageUrl`
+        FROM hot_downloads_file
+        LIMIT 30;
     </select>
 
 
