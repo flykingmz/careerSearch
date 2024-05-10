@@ -15,7 +15,7 @@
         <result property="updatedAt" column="updatedAt" javaType="java.time.LocalDateTime"  />
     </resultMap>
 
-    <select id="getRelatedFile" resultMap="RelatedFileMapper" parameterType="boolean">
+    <select id="getRelatedFile" resultMap="HotDownloadsMapper" parameterType="boolean">
         SELECT `id`, `title`, `downloads`, `cost`
         FROM hot_downloads_file
         <if test="hot">
