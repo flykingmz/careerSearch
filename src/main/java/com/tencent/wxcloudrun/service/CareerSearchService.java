@@ -9,7 +9,10 @@ import java.util.List;
 
 public interface CareerSearchService {
     List<HotList> getHotList(Integer type);
-    StreamingResponseBody search(String llmParameter) throws Exception ;
+    StreamingResponseBody streamSearch(String llmParameter) throws Exception ;
+
+    String search(String llmParameter) throws Exception ;
+
     String recommend(String llmParameter) throws Exception ;
     void searchRecord(SearchRequest searchRequest,boolean async);
     void like(Long docId);

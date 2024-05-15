@@ -53,8 +53,8 @@ public class CareerSearchServiceImpl implements CareerSearchService {
     }
 
     @Override
-    public StreamingResponseBody search(String llmParameter) throws Exception {
-        logger.info("search into 3rd llm " + llmParameter);
+    public StreamingResponseBody streamSearch(String llmParameter) throws Exception {
+        logger.info("streamSearch into 3rd llm " + llmParameter);
         // 获取输出流并写入数据
         HttpURLConnection conn = getConect();
         OutputStream os = conn.getOutputStream();
@@ -78,6 +78,32 @@ public class CareerSearchServiceImpl implements CareerSearchService {
             };
         }
         return responseBody;
+    }
+
+    @Override
+    public String search(String llmParameter) throws Exception {
+        logger.info("search into 3rd llm " + llmParameter);
+        // 获取输出流并写入数据
+        HttpURLConnection conn = getConect();
+        OutputStream os = conn.getOutputStream();
+        byte[] input = llmParameter.getBytes("UTF-8");
+        os.write(input, 0, input.length);
+        // 获取响应码和响应内容
+        logger.info("url return code:" + conn.getResponseCode());
+        if (conn.getResponseCode() == HttpURLConnection.HTTP_OK) {
+            InputStream inputStream = conn.getInputStream();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+            String line;
+            StringBuilder response = new StringBuilder();
+
+            while ((line = reader.readLine()) != null) {
+                System.out.println(line);
+                response.append(line);
+            }
+            reader.close();
+            return response.toString();
+        }
+        return null;
     }
 
     private HttpURLConnection getConect() throws Exception {

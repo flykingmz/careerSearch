@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 import com.alibaba.fastjson.JSON;
 
@@ -117,22 +118,37 @@ public class CareerSearchController {
      * @param searchRequest
      * @return
      */
-    @PostMapping(value = "/careersearch/search")
-    ResponseEntity<StreamingResponseBody> search(@RequestBody SearchRequest searchRequest){
-        logger.info("/careersearch/search request "+searchRequest.getSearchWords() +"|"+searchRequest.getCareerType());
+    @PostMapping(value = "/careersearch/steam/search")
+    ResponseEntity<StreamingResponseBody> steamSearch(@RequestBody SearchRequest searchRequest){
+        logger.info("/careersearch/steam/search request "+searchRequest.getSearchWords() +"|"+searchRequest.getCareerType());
         //调用搜索列表流水记录,可以修改为异步实现
         careerSearchService.searchRecord(searchRequest,true);
 
         StreamingResponseBody responseBody = null;
         String llmParameter = getKimiparameter(searchRequest.getSearchWords(),searchRequest.getCareerType(),SearchType.SEARCH);
         try {
-            responseBody = careerSearchService.search(llmParameter);
+            responseBody = careerSearchService.streamSearch(llmParameter);
         }catch (Exception e){
             logger.error("LLM 3rd exception "+e.getMessage());
         }
         return ResponseEntity.ok()
                 .contentType(MediaType.TEXT_PLAIN)
                 .body(responseBody);
+    }
+    @PostMapping(value = "/careersearch/search")
+   ApiResponse search(@RequestBody SearchRequest searchRequest){
+        logger.info("/careersearch/search request "+searchRequest.getSearchWords() +"|"+searchRequest.getCareerType());
+        //调用搜索列表流水记录,可以修改为异步实现
+        careerSearchService.searchRecord(searchRequest,true);
+
+        String llmParameter = getKimiparameter(searchRequest.getSearchWords(),searchRequest.getCareerType(),SearchType.SEARCH);
+        String searchResult = null;
+        try {
+            searchResult = careerSearchService.search(llmParameter);
+        }catch (Exception e){
+            logger.error("LLM 3rd exception "+e.getMessage());
+        }
+        return ApiResponse.ok(searchResult);
     }
     private String getKimiparameter(String searchWords, Integer careerType, SearchType searchType){
         KimiParameter kimiParameter = new KimiParameter();
@@ -153,11 +169,12 @@ public class CareerSearchController {
         kimiMessage.add(user);
         kimiParameter.setMessages(kimiMessage);
         kimiParameter.setTemperature(0.3F);
-        if (searchType.equals(SearchType.SEARCH)) {
-            kimiParameter.setStream(true);
-        }else if (searchType.equals(SearchType.RECOMMENDATIONS)){
-            kimiParameter.setStream(false);
-        }
+        kimiParameter.setStream(false);
+//        if (searchType.equals(SearchType.SEARCH)) {
+//            kimiParameter.setStream(true);
+//        }else if (searchType.equals(SearchType.RECOMMENDATIONS)){
+//            kimiParameter.setStream(false);
+//        }
         JSONObject jsonObject = (JSONObject)JSON.toJSON(kimiParameter);
         return jsonObject.toJSONString();
     }
